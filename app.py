@@ -291,7 +291,7 @@ def grafico_timelapse(df_team_sel, df_rival_sel,
         xaxis=dict(
             tickvals=x, ticktext=partidos,
             tickangle=-40, gridcolor=grid_color,
-            tickfont=dict(color=text_color, size=9),
+            tickfont=dict(color=text_color, size=13),
         ),
         yaxis=dict(gridcolor=grid_color, tickfont=dict(color=text_color)),
         paper_bgcolor=bg_paper, plot_bgcolor=bg_plot,
