@@ -366,16 +366,29 @@ def main():
                             st.caption(f"No encontre logo para {eq_b}")
 
                 fig_b = grafico_barras(df_b, var_b, eq_b, cd_b, cn_b, ori_b, ord_b, logo_sz, logos_dir, fondo)
-                st.plotly_chart(fig_b, use_container_width=True)
+                st.plotly_chart(fig_b, use_container_width=True,
+                    config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b, "scale": 2}})
 
-                st.markdown("### Descargar")
-                if st.button("Generar PDF", key="pdf_b"):
-                    with st.spinner("Generando..."):
-                        pdf = exportar_pdf(fig_b)
-                    if pdf:
-                        st.download_button("Descargar PDF", pdf, file_name=f"{var_b}.pdf", mime="application/pdf")
-                    else:
-                        st.error("Instala kaleido: pip3 install kaleido")
+                st.markdown("### Descargar / Copiar imagen")
+                col_a, col_b2 = st.columns(2)
+                with col_a:
+                    if st.button("Generar imagen para copiar", key="jpeg_b"):
+                        with st.spinner("Generando..."):
+                            try:
+                                jpeg_bytes = fig_b.to_image(format="jpeg", width=1400, height=700, scale=2)
+                                st.image(jpeg_bytes, caption="Click derecho sobre la imagen → Copiar imagen", use_container_width=True)
+                                st.download_button("Descargar JPEG", jpeg_bytes,
+                                                   file_name=f"{var_b}.jpg", mime="image/jpeg", key="dl_jpeg_b")
+                            except Exception:
+                                st.error("Instala kaleido: pip3 install kaleido")
+                with col_b2:
+                    if st.button("Generar PDF", key="pdf_b"):
+                        with st.spinner("Generando..."):
+                            pdf = exportar_pdf(fig_b)
+                        if pdf:
+                            st.download_button("Descargar PDF", pdf, file_name=f"{var_b}.pdf", mime="application/pdf")
+                        else:
+                            st.error("Instala kaleido: pip3 install kaleido")
 
                 with st.expander("Ver tabla"):
                     tab_b = df_b[[var_b]].dropna().sort_values(var_b, ascending=False)
@@ -443,18 +456,31 @@ def main():
                 col_eq, col_riv,
                 fondo, mostrar_vals
             )
-            st.plotly_chart(fig_t, use_container_width=True)
+            st.plotly_chart(fig_t, use_container_width=True,
+                config={"toImageButtonOptions": {"format": "jpeg", "filename": f"timelapse_{var_eq}", "scale": 2}})
 
-            st.markdown("### Descargar")
-            if st.button("Generar PDF", key="pdf_t"):
-                with st.spinner("Generando..."):
-                    pdf = exportar_pdf(fig_t)
-                if pdf:
-                    st.download_button("Descargar PDF", pdf,
-                                       file_name=f"timelapse_{var_eq}.pdf",
-                                       mime="application/pdf")
-                else:
-                    st.error("Instala kaleido: pip3 install kaleido")
+            st.markdown("### Descargar / Copiar imagen")
+            col_c, col_d = st.columns(2)
+            with col_c:
+                if st.button("Generar imagen para copiar", key="jpeg_t"):
+                    with st.spinner("Generando..."):
+                        try:
+                            jpeg_bytes = fig_t.to_image(format="jpeg", width=1400, height=600, scale=2)
+                            st.image(jpeg_bytes, caption="Click derecho sobre la imagen → Copiar imagen", use_container_width=True)
+                            st.download_button("Descargar JPEG", jpeg_bytes,
+                                               file_name=f"timelapse_{var_eq}.jpg", mime="image/jpeg", key="dl_jpeg_t")
+                        except Exception:
+                            st.error("Instala kaleido: pip3 install kaleido")
+            with col_d:
+                if st.button("Generar PDF", key="pdf_t"):
+                    with st.spinner("Generando..."):
+                        pdf = exportar_pdf(fig_t)
+                    if pdf:
+                        st.download_button("Descargar PDF", pdf,
+                                           file_name=f"timelapse_{var_eq}.pdf",
+                                           mime="application/pdf")
+                    else:
+                        st.error("Instala kaleido: pip3 install kaleido")
 
             with st.expander("Ver datos"):
                 cols_ver = ["Partido", var_eq]
