@@ -195,17 +195,27 @@ def grafico_dispersion(df, var_x, var_y, logo_size, logos_dir, fondo, mostrar_li
 
     fig = go.Figure()
 
-    # Línea diagonal de referencia
+    # Líneas de promedio vertical y horizontal
     if mostrar_linea_diag:
-        all_vals = x_vals + y_vals
-        mn, mx = min(all_vals) * 0.92, max(all_vals) * 1.08
-        fig.add_trace(go.Scatter(
-            x=[mn, mx], y=[mn, mx],
-            mode="lines",
+        prom_x = pd.Series(x_vals).mean()
+        prom_y = pd.Series(y_vals).mean()
+
+        # Línea vertical en promedio X
+        fig.add_vline(
+            x=prom_x,
             line=dict(color="gray", width=1.5, dash="dash"),
-            showlegend=False,
-            hoverinfo="skip",
-        ))
+            annotation_text=f"Prom. {var_x}: {prom_x:.2f}",
+            annotation_position="top right",
+            annotation_font_color="gray",
+        )
+        # Línea horizontal en promedio Y
+        fig.add_hline(
+            y=prom_y,
+            line=dict(color="gray", width=1.5, dash="dash"),
+            annotation_text=f"Prom. {var_y}: {prom_y:.2f}",
+            annotation_position="bottom right",
+            annotation_font_color="gray",
+        )
 
     # Puntos invisibles para el hover
     fig.add_trace(go.Scatter(
@@ -481,7 +491,7 @@ def main():
                                                index=min(1, len(vars_b)-1))
                         logos_dir = "Logos"
                         logo_sz_d = st.slider("Tamano logos (px)", 10, 80, 35, 5, key="logo_d")
-                        linea_d   = st.toggle("Mostrar linea diagonal", value=True, key="ld_d")
+                        linea_d   = st.toggle("Mostrar lineas de promedio", value=True, key="ld_d")
 
                 # ── Renderizar grafica ──
                 if tipo_graf == "Barras":
