@@ -182,6 +182,101 @@ def grafico_barras(df, variable, equipo_dest, col_dest, col_norm,
     return fig
 
 
+# ──────────────────────────────────────────────
+# GRAFICO DE DISPERSION CON LOGOS
+# ──────────────────────────────────────────────
+def grafico_dispersion(df, var_x, var_y, logo_size, logos_dir, fondo, mostrar_linea_diag):
+    bg_plot, bg_paper, text_color, grid_color = colores_grafico(fondo)
+
+    data = df[[var_x, var_y]].dropna()
+    equipos = list(data.index)
+    x_vals  = list(data[var_x])
+    y_vals  = list(data[var_y])
+
+    fig = go.Figure()
+
+    # Línea diagonal de referencia
+    if mostrar_linea_diag:
+        all_vals = x_vals + y_vals
+        mn, mx = min(all_vals) * 0.92, max(all_vals) * 1.08
+        fig.add_trace(go.Scatter(
+            x=[mn, mx], y=[mn, mx],
+            mode="lines",
+            line=dict(color="gray", width=1.5, dash="dash"),
+            showlegend=False,
+            hoverinfo="skip",
+        ))
+
+    # Puntos invisibles para el hover
+    fig.add_trace(go.Scatter(
+        x=x_vals, y=y_vals,
+        mode="markers",
+        marker=dict(size=logo_size if logo_size > 0 else 18, opacity=0),
+        text=equipos,
+        hovertemplate="<b>%{text}</b><br>" + var_x + ": %{x:.2f}<br>" + var_y + ": %{y:.2f}<extra></extra>",
+        showlegend=False,
+    ))
+
+    # Logos o nombres como etiquetas
+    if logo_size > 0:
+        x_range = max(x_vals) - min(x_vals) if len(x_vals) > 1 else 1
+        y_range = max(y_vals) - min(y_vals) if len(y_vals) > 1 else 1
+        sz_x = (x_range / 10) * (logo_size / 40)
+        sz_y = (y_range / 10) * (logo_size / 40)
+
+        for eq, xv, yv in zip(equipos, x_vals, y_vals):
+            logo = buscar_logo(eq, logos_dir)
+            if logo:
+                fig.add_layout_image(
+                    source=img_b64(logo, logo_size * 2),
+                    x=xv, y=yv,
+                    xref="x", yref="y",
+                    sizex=sz_x, sizey=sz_y,
+                    xanchor="center", yanchor="middle",
+                    layer="above",
+                )
+            else:
+                # Si no hay logo, mostrar nombre
+                fig.add_annotation(
+                    x=xv, y=yv, text=eq,
+                    showarrow=False,
+                    font=dict(color=text_color, size=10),
+                )
+    else:
+        for eq, xv, yv in zip(equipos, x_vals, y_vals):
+            fig.add_annotation(
+                x=xv, y=yv, text=eq,
+                showarrow=False,
+                font=dict(color=text_color, size=10),
+            )
+
+    pad_x = (max(x_vals) - min(x_vals)) * 0.1 if len(x_vals) > 1 else 1
+    pad_y = (max(y_vals) - min(y_vals)) * 0.1 if len(y_vals) > 1 else 1
+
+    fig.update_layout(
+        title=dict(
+            text=f"{var_x}  vs  {var_y}",
+            font=dict(color=text_color, size=16, family="Arial Black"), x=0.5
+        ),
+        xaxis=dict(
+            title=dict(text=var_x, font=dict(color=text_color, size=13)),
+            gridcolor=grid_color, tickfont=dict(color=text_color),
+            range=[min(x_vals) - pad_x, max(x_vals) + pad_x],
+        ),
+        yaxis=dict(
+            title=dict(text=var_y, font=dict(color=text_color, size=13)),
+            gridcolor=grid_color, tickfont=dict(color=text_color),
+            range=[min(y_vals) - pad_y, max(y_vals) + pad_y],
+        ),
+        paper_bgcolor=bg_paper, plot_bgcolor=bg_plot,
+        font=dict(color=text_color),
+        height=650,
+        margin=dict(t=60, b=60, l=80, r=40),
+        showlegend=False,
+    )
+    return fig
+
+
 # ══════════════════════════════════════════════
 # TAB 2 — TIMELAPSE
 # ══════════════════════════════════════════════
@@ -332,7 +427,7 @@ def main():
 
     aplicar_css(fondo)
 
-    tab1, tab2 = st.tabs(["Graficas de Barras", "Timelapse"])
+    tab1, tab2 = st.tabs(["Graficas de Equipos", "Timelapse"])
 
     # ════════════════════════════════════════
     # TAB 1
@@ -340,11 +435,11 @@ def main():
     with tab1:
         with st.sidebar:
             st.markdown("---")
-            st.markdown("## Graficas de Barras")
-            excel_b = st.file_uploader("Sube Excel de barras", type=["xlsx","xls"], key="barras")
+            st.markdown("## Graficas de Equipos")
+            excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
 
         if excel_b is None:
-            st.info("Sube tu Excel de barras en el panel izquierdo.")
+            st.info("Sube tu Excel en el panel izquierdo.")
         else:
             try:
                 df_b = cargar_excel_barras(excel_b)
@@ -358,40 +453,73 @@ def main():
                 st.warning("El Excel no tiene datos numéricos.")
             else:
                 with st.sidebar:
-                    var_b    = st.selectbox("Variable a graficar", vars_b, key="var_b")
-                    eq_b     = st.selectbox("Equipo a destacar", equipos_b, key="eq_b")
-                    c1, c2   = st.columns(2)
-                    cd_b     = c1.color_picker("Destacado", "#F39C12", key="cd_b")
-                    cn_b     = c2.color_picker("Resto", "#2C3E50", key="cn_b")
-                    ori_b    = st.radio("Orientacion", ["Vertical", "Horizontal"], key="ori_b")
-                    ord_b    = st.radio("Orden", ["Mayor a menor", "Menor a mayor"], key="ord_b")
-                    st.markdown("---")
-                    st.markdown("## Logos")
-                    logos_dir = "Logos"
-                    logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
-                    if logo_sz > 0:
-                        lp = buscar_logo(eq_b, logos_dir)
-                        if lp:
-                            st.image(lp, width=60)
-                        else:
-                            st.caption(f"No encontre logo para {eq_b}")
+                    tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
 
-                fig_b = grafico_barras(df_b, var_b, eq_b, cd_b, cn_b, ori_b, ord_b, logo_sz, logos_dir, fondo)
-                st.plotly_chart(fig_b, use_container_width=True,
-                    config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b, "scale": 2}})
+                    if tipo_graf == "Barras":
+                        st.markdown("---")
+                        var_b  = st.selectbox("Variable a graficar", vars_b, key="var_b")
+                        eq_b   = st.selectbox("Equipo a destacar", equipos_b, key="eq_b")
+                        c1, c2 = st.columns(2)
+                        cd_b   = c1.color_picker("Destacado", "#F39C12", key="cd_b")
+                        cn_b   = c2.color_picker("Resto", "#2C3E50", key="cn_b")
+                        ori_b  = st.radio("Orientacion", ["Vertical", "Horizontal"], key="ori_b")
+                        ord_b  = st.radio("Orden", ["Mayor a menor", "Menor a mayor"], key="ord_b")
+                        st.markdown("---")
+                        st.markdown("## Logos")
+                        logos_dir = "Logos"
+                        logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
+                        if logo_sz > 0:
+                            lp = buscar_logo(eq_b, logos_dir)
+                            if lp:
+                                st.image(lp, width=60)
+                            else:
+                                st.caption(f"No encontre logo para {eq_b}")
+                    else:
+                        st.markdown("---")
+                        var_x_d = st.selectbox("Variable eje X", vars_b, key="vx_d", index=0)
+                        var_y_d = st.selectbox("Variable eje Y", vars_b, key="vy_d",
+                                               index=min(1, len(vars_b)-1))
+                        logos_dir = "Logos"
+                        logo_sz_d = st.slider("Tamano logos (px)", 10, 80, 35, 5, key="logo_d")
+                        linea_d   = st.toggle("Mostrar linea diagonal", value=True, key="ld_d")
 
-                st.markdown("### Descargar imagen")
-                jpeg_b = generar_jpeg(fig_b, w=1400, h=700)
-                if jpeg_b:
-                    st.image(jpeg_b, caption="Click derecho → Copiar imagen", use_container_width=True)
-                    st.download_button("Descargar JPEG", jpeg_b,
-                                       file_name=f"{var_b}.jpg", mime="image/jpeg", key="dl_jpeg_b")
+                # ── Renderizar grafica ──
+                if tipo_graf == "Barras":
+                    fig_b = grafico_barras(df_b, var_b, eq_b, cd_b, cn_b, ori_b, ord_b, logo_sz, logos_dir, fondo)
+                    st.plotly_chart(fig_b, use_container_width=True,
+                        config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b, "scale": 2}})
 
-                with st.expander("Ver tabla"):
-                    tab_b = df_b[[var_b]].dropna().sort_values(var_b, ascending=False)
-                    def res_b(row):
-                        return [f"background-color: {cd_b}55"] * len(row) if row.name == eq_b else [""] * len(row)
-                    st.dataframe(tab_b.style.apply(res_b, axis=1).format("{:.2f}"), use_container_width=True)
+                    st.markdown("### Descargar imagen")
+                    jpeg_b = generar_jpeg(fig_b, w=1400, h=700)
+                    if jpeg_b:
+                        st.image(jpeg_b, caption="Click derecho → Copiar imagen", use_container_width=True)
+                        st.download_button("Descargar JPEG", jpeg_b,
+                                           file_name=f"{var_b}.jpg", mime="image/jpeg", key="dl_jpeg_b")
+
+                    with st.expander("Ver tabla"):
+                        tab_b = df_b[[var_b]].dropna().sort_values(var_b, ascending=False)
+                        def res_b(row):
+                            return [f"background-color: {cd_b}55"] * len(row) if row.name == eq_b else [""] * len(row)
+                        st.dataframe(tab_b.style.apply(res_b, axis=1).format("{:.2f}"), use_container_width=True)
+
+                else:
+                    fig_d = grafico_dispersion(df_b, var_x_d, var_y_d, logo_sz_d, logos_dir, fondo, linea_d)
+                    st.plotly_chart(fig_d, use_container_width=True,
+                        config={"toImageButtonOptions": {"format": "jpeg", "filename": f"{var_x_d}_vs_{var_y_d}", "scale": 2}})
+
+                    st.markdown("### Descargar imagen")
+                    jpeg_d = generar_jpeg(fig_d, w=1200, h=800)
+                    if jpeg_d:
+                        st.image(jpeg_d, caption="Click derecho → Copiar imagen", use_container_width=True)
+                        st.download_button("Descargar JPEG", jpeg_d,
+                                           file_name=f"{var_x_d}_vs_{var_y_d}.jpg",
+                                           mime="image/jpeg", key="dl_jpeg_d")
+
+                    with st.expander("Ver tabla"):
+                        st.dataframe(
+                            df_b[[var_x_d, var_y_d]].dropna().sort_values(var_x_d, ascending=False).style.format("{:.2f}"),
+                            use_container_width=True
+                        )
 
     # ════════════════════════════════════════
     # TAB 2 — TIMELAPSE
