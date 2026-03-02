@@ -446,7 +446,18 @@ def main():
         with st.sidebar:
             st.markdown("---")
             st.markdown("## Graficas de Equipos")
-            excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
+            # ── Selector de archivo: preloaded o upload ──
+            archivos_data = []
+            if os.path.exists("data"):
+                archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls"))]
+
+            fuente_b = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_b") if archivos_data else "Subir archivo"
+
+            if fuente_b == "Seleccionar archivo guardado" and archivos_data:
+                sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
+                excel_b = open(os.path.join("data", sel_b), "rb")
+            else:
+                excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
 
         if excel_b is None:
             st.info("Sube tu Excel en el panel izquierdo.")
