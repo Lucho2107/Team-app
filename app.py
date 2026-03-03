@@ -449,7 +449,7 @@ def main():
             # ── Selector de archivo: preloaded o upload ──
             archivos_data = []
             if os.path.exists("data"):
-            archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
+                archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
 
             fuente_b = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_b") if archivos_data else "Subir archivo"
 
