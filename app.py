@@ -363,17 +363,29 @@ def cargar_excel_timelapse(file):
     df_rival["Partido"]       = partidos
     df_rival["_rival_nombre"] = nombre_rival
 
+    # Detectar local/visitante: el equipo está primero en "Partido" → local
+    nombre_eq_base = nombre_equipo[0] if nombre_equipo else ""
+    es_local = []
+    for partido, eq in zip(partidos, nombre_equipo):
+        eq_clean = str(eq).strip()
+        partido_str = str(partido).strip()
+        es_local.append(partido_str.startswith(eq_clean) or partido_str.lower().startswith(eq_clean.lower()))
+
+    df_team["_es_local"]  = es_local
+    df_rival["_es_local"] = es_local
+
     return df_team, df_rival, num_cols
 
 
 def grafico_timelapse(df_team_sel, df_rival_sel,
                       var_equipo, var_rival,
                       color_eq, color_riv,
-                      fondo, mostrar_valores):
+                      fondo, mostrar_valores,
+                      prom_global_eq=None, prom_global_riv=None,
+                      label_filtro=""):
 
     bg_plot, bg_paper, text_color, grid_color = colores_grafico(fondo)
 
-    # df_team_sel ya viene invertido (más antiguo primero)
     partidos    = df_team_sel["Partido"].tolist()
     nombre_eq   = df_team_sel["_equipo_nombre"].iloc[0]
     nombre_rivs = df_rival_sel["_rival_nombre"].tolist()
@@ -381,32 +393,52 @@ def grafico_timelapse(df_team_sel, df_rival_sel,
     y_eq  = df_team_sel[var_equipo].tolist()
     y_riv = df_rival_sel[var_rival].tolist() if var_rival else None
 
-    # Promedios (solo de los partidos seleccionados)
+    # Promedios del filtro actual
     prom_eq  = pd.Series(y_eq).dropna().mean()
     prom_riv = pd.Series(y_riv).dropna().mean() if y_riv else None
 
     fig = go.Figure()
-
     n = len(partidos)
     x = list(range(n))
 
-    # ── Línea promedio equipo ──
+    # ── Promedio global (línea muy tenue) solo si hay filtro activo ──
+    if prom_global_eq is not None and label_filtro:
+        fig.add_trace(go.Scatter(
+            x=x, y=[prom_global_eq] * n,
+            mode="lines",
+            name=f"Prom. general {var_equipo}: {prom_global_eq:.2f}",
+            line=dict(color=color_eq, width=1, dash="dot"),
+            opacity=0.4,
+            hoverinfo="skip",
+            showlegend=True,
+        ))
+        if var_rival and prom_global_riv is not None:
+            fig.add_trace(go.Scatter(
+                x=x, y=[prom_global_riv] * n,
+                mode="lines",
+                name=f"Prom. general {var_rival} Rival: {prom_global_riv:.2f}",
+                line=dict(color=color_riv, width=1, dash="dot"),
+                opacity=0.4,
+                hoverinfo="skip",
+                showlegend=True,
+            ))
+
+    # ── Promedio del filtro (local o visitante) ──
+    lbl_prom = f"Prom. {label_filtro} " if label_filtro else "Prom. "
     fig.add_trace(go.Scatter(
         x=x, y=[prom_eq] * n,
         mode="lines",
-        name=f"Prom. {var_equipo}: {prom_eq:.2f}",
-        line=dict(color=color_eq, width=1.5, dash="dot"),
+        name=f"{lbl_prom}{var_equipo}: {prom_eq:.2f}",
+        line=dict(color=color_eq, width=1.8, dash="dot"),
         hoverinfo="skip",
         showlegend=True,
     ))
-
-    # ── Línea promedio rival ──
     if var_rival and prom_riv is not None:
         fig.add_trace(go.Scatter(
             x=x, y=[prom_riv] * n,
             mode="lines",
-            name=f"Prom. {var_rival} Rival: {prom_riv:.2f}",
-            line=dict(color=color_riv, width=1.5, dash="dot"),
+            name=f"{lbl_prom}{var_rival} Rival: {prom_riv:.2f}",
+            line=dict(color=color_riv, width=1.8, dash="dot"),
             hoverinfo="skip",
             showlegend=True,
         ))
@@ -625,21 +657,46 @@ def main():
 
                 mostrar_vals = st.toggle("Mostrar valores en linea", value=True, key="mv_t")
 
+                st.markdown("**Filtro de partidos**")
+                filtro_loc = st.radio("Condicion", ["Todos", "Local", "Visitante"], key="fl_t")
+
             # Tomar los primeros N del Excel (más recientes) y luego invertir para mostrar antiguo→reciente
-            df_team_sel  = df_team.head(n_partidos).iloc[::-1].reset_index(drop=True)
-            df_rival_sel = df_rival.head(n_partidos).iloc[::-1].reset_index(drop=True)
+            df_team_n  = df_team.head(n_partidos).iloc[::-1].reset_index(drop=True)
+            df_rival_n = df_rival.head(n_partidos).iloc[::-1].reset_index(drop=True)
+
+            # Promedios globales (todos los N partidos) para mostrar cuando hay filtro
+            prom_global_eq  = df_team_n[var_eq].dropna().mean() if var_eq in df_team_n.columns else None
+            prom_global_riv = df_rival_n[var_riv].dropna().mean() if var_riv and var_riv in df_rival_n.columns else None
+
+            # Aplicar filtro local/visitante
+            if filtro_loc == "Local":
+                mask = df_team_n["_es_local"] == True
+                label_filtro = "Local"
+            elif filtro_loc == "Visitante":
+                mask = df_team_n["_es_local"] == False
+                label_filtro = "Visitante"
+            else:
+                mask = pd.Series([True] * len(df_team_n))
+                label_filtro = ""
+
+            df_team_sel  = df_team_n[mask].reset_index(drop=True)
+            df_rival_sel = df_rival_n[mask].reset_index(drop=True)
 
             nombre_eq = df_team_sel["_equipo_nombre"].iloc[0] \
                 if "_equipo_nombre" in df_team_sel.columns else "Equipo"
 
             label_riv = f"  vs  {var_riv} Rival" if var_riv else ""
-            st.markdown(f"### {nombre_eq} — {var_eq}{label_riv}  ·  Ultimos {n_partidos} partidos")
+            filtro_txt = f" · {filtro_loc}" if filtro_loc != "Todos" else ""
+            st.markdown(f"### {nombre_eq} — {var_eq}{label_riv}  ·  Ultimos {n_partidos} partidos{filtro_txt}")
 
             fig_t = grafico_timelapse(
                 df_team_sel, df_rival_sel,
                 var_eq, var_riv,
                 col_eq, col_riv,
-                fondo, mostrar_vals
+                fondo, mostrar_vals,
+                prom_global_eq=prom_global_eq if filtro_loc != "Todos" else None,
+                prom_global_riv=prom_global_riv if filtro_loc != "Todos" else None,
+                label_filtro=label_filtro,
             )
             st.plotly_chart(fig_t, use_container_width=True,
                 config={"toImageButtonOptions": {"format": "jpeg", "filename": f"timelapse_{var_eq}", "scale": 2}})
