@@ -518,7 +518,7 @@ def main():
     with tab1:
         with st.sidebar:
             st.markdown("---")
-            with st.expander("⚽ Graficas de Equipos", expanded=True):
+            with st.expander("Graficas de Equipos", expanded=True):
                 # ── Selector de archivo: preloaded o upload ──
                 archivos_data = []
                 if os.path.exists("data"):
@@ -551,7 +551,7 @@ def main():
                 st.warning("El Excel no tiene datos numéricos.")
             else:
                 with st.sidebar:
-                    with st.expander("⚽ Graficas de Equipos", expanded=True):
+                    with st.expander("Graficas de Equipos", expanded=True):
                         tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
 
                         if tipo_graf == "Barras":
@@ -620,7 +620,7 @@ def main():
     with tab2:
         with st.sidebar:
             st.markdown("---")
-            with st.expander("⏱ Timelapse", expanded=True):
+            with st.expander("Timelapse", expanded=True):
                 excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
 
         if excel_t is None:
@@ -634,7 +634,7 @@ def main():
             total_partidos = len(df_team)
 
             with st.sidebar:
-                with st.expander("⏱ Timelapse", expanded=True):
+                with st.expander("Timelapse", expanded=True):
                     # ── Cuántos partidos mostrar ──
                     n_partidos = st.slider(
                         "Numero de partidos",
