@@ -290,8 +290,52 @@ def grafico_dispersion(df, var_x, var_y, logo_size, logos_dir, fondo, mostrar_li
 # ══════════════════════════════════════════════
 # TAB 2 — TIMELAPSE
 # ══════════════════════════════════════════════
+
+# Nombres correctos para el formato Wyscout de 105 columnas
+COLUMNAS_WYSCOUT = [
+    'Fecha', 'Partido', 'Competición', 'Duración', 'Equipo', 'Seleccionar esquema',
+    'Goles', 'xG', 'Remates', 'Remates al arco', '% Remates al arco',
+    'Pases ', 'Pases Acertados', '% Pases Acertados', 'Posesión del balón, %',
+    'Perdidas', 'Perdidas bajas', 'Perdidas Medias', 'Perdidas Altas',
+    'Recuperaciones', 'Recuperaciones Bajas', 'Recuperaciones Medias', 'Recuperaciones Altas',
+    'Duelos', 'Duelos ganados', '% Duelos Ganados',
+    'Remates de fuera del área ', 'Remates de fuera del área al arco', '% Remates de fuera del área al arco',
+    'Ataques posicionales', 'Ataques posicionales con remate', '% Ataques posicionales con remate',
+    'Contraataques', 'Contraataques con remate', '% Contraataques con remate',
+    'Jugadas a balón parado', 'Jugadas a balón parado con remate', '% Jugadas a balón parado con remate',
+    'Córneres', 'Córneres con remate', '%, Córneres con remate',
+    'Tiros libres', 'Tiros libres con remate', '% Tiros libres con remate',
+    'Penaltis', 'Penaltis Marcados', '% Penaltis Marcados',
+    'Centros', 'Centros precisos', '% Centros Precisos',
+    'Pases cruzados en profundidad completados', 'Pases en profundidad completados',
+    'Entradas al área de penalti', 'Entradas al área de penalti (carreras)', 'Entradas al área de penalti (pases cruzados)',
+    'Toques en el área de penalti',
+    'Duelos ofensivos', 'Duelos ofensivos ganados', '% Duelos ofensivos ganados',
+    'Fuera de juego',
+    'Duelos defensivos', 'Duelos defensivos ganados', '% Duelos defensivos ganados',
+    'Duelos aéreos ', 'Duelos aéreos ganados', '% Duelos aéreos ganados',
+    'Entradas a ras de suelo ', 'Entradas a ras de suelo logradas', '% Entradas a ras de suelo logradas',
+    'Interceptaciones', 'Despejes', 'Faltas', 'Tarjetas amarillas', 'Tarjetas rojas',
+    'Pases hacia adelante ', 'Pases hacia adelante logrados', '% Pases hacia adelante logrados',
+    'Pases hacia atrás ', 'Pases hacia atrás logrados', '% Pases hacia atrás logrados',
+    'Pases laterales ', 'Pases laterales logrados', '% Pases laterales logrados',
+    'Pases largos ', 'Pases largos llogrados', '% Pases largos logrados',
+    'Pases en el último tercio ', 'Pases en el último tercio logrados', '% Pases en el último tercio logrados',
+    'Pases progresivos ', 'Pases progresivos precisos', '% Pases progresivos precisos',
+    'Desmarques ', 'Desmarques logrados', '% Desmarques logrados',
+    'Saques laterales ', 'Saques laterales logrados', '% Saques laterales logrados',
+    'Saques de meta', 'Intensidad de paso', 'Promedio pases por posesión del balón',
+    'Lanzamiento largo %', 'Distancia media de tiro', 'Longitud media pases', 'PPDA'
+]
+
 def cargar_excel_timelapse(file):
     df_raw = pd.read_excel(file, header=0, engine="openpyxl")
+
+    # Si tiene columnas Unnamed (celdas combinadas de Wyscout) y tiene 105 cols, renombrar
+    tiene_unnamed = any("Unnamed" in str(c) for c in df_raw.columns)
+    if tiene_unnamed and df_raw.shape[1] == 105:
+        df_raw.columns = COLUMNAS_WYSCOUT
+
     headers = list(df_raw.columns)
 
     # Saltar filas de resumen (filas 2 y 3 del Excel = índices 0 y 1)
@@ -308,7 +352,7 @@ def cargar_excel_timelapse(file):
     nombre_equipo = team_rows[equipo_col].tolist()
     nombre_rival  = rival_rows[equipo_col].tolist()
 
-    num_cols = [c for c in headers[6:] if c is not None]
+    num_cols = [c for c in headers[6:] if c is not None and "Unnamed" not in str(c)]
 
     df_team  = team_rows[num_cols].apply(pd.to_numeric, errors="coerce").reset_index(drop=True)
     df_rival = rival_rows[num_cols].apply(pd.to_numeric, errors="coerce").reset_index(drop=True)
@@ -319,9 +363,6 @@ def cargar_excel_timelapse(file):
     df_rival["Partido"]       = partidos
     df_rival["_rival_nombre"] = nombre_rival
 
-    # Los datos en el Excel están de más reciente (arriba) a más antiguo (abajo).
-    # NO invertimos aquí — dejamos en orden Excel (reciente primero).
-    # Luego tomaremos los primeros N (= N más recientes) y los invertiremos para mostrar.
     return df_team, df_rival, num_cols
 
 
