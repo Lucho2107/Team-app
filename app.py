@@ -489,12 +489,6 @@ def main():
                         st.markdown("## Logos")
                         logos_dir = "Logos"
                         logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
-                        if logo_sz > 0:
-                            lp = buscar_logo(eq_b, logos_dir)
-                            if lp:
-                                st.image(lp, width=60)
-                            else:
-                                st.caption(f"No encontre logo para {eq_b}")
                     else:
                         st.markdown("---")
                         var_x_d = st.selectbox("Variable eje X", vars_b, key="vx_d", index=0)
