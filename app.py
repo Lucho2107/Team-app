@@ -432,7 +432,7 @@ def main():
 
     with st.sidebar:
         st.markdown("## Fondo")
-        fondo = st.radio("Color de fondo", ["Oscuro", "Blanco", "Transparente"])
+        fondo = st.radio("Color de fondo", ["Oscuro", "Blanco"])
         st.session_state.fondo = fondo
 
     aplicar_css(fondo)
