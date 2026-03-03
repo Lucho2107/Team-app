@@ -161,7 +161,7 @@ def grafico_barras(df, variable, equipo_dest, col_dest, col_norm,
         ))
         max_val = max(valores) if valores else 1
         fig.update_layout(
-            yaxis=dict(tickvals=list(range(n)), ticktext=equipos,
+            yaxis=dict(tickvals=list(range(n)), ticktext=[""] * n,
                        gridcolor="rgba(0,0,0,0)", tickfont=dict(color=text_color, size=10)),
             xaxis=dict(gridcolor=grid_color, tickfont=dict(color=text_color), range=[0, max_val * 1.25]),
             height=max(450, n * 40), margin=dict(l=200, r=80, t=40, b=40),
