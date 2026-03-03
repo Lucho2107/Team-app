@@ -455,6 +455,10 @@ def main():
 
             if fuente_b == "Seleccionar archivo guardado" and archivos_data:
                 sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
+                import datetime
+                fecha_mod = os.path.getmtime(os.path.join("data", sel_b))
+                fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y %H:%M")
+                st.caption(f"Última actualización: {fecha_str}")
                 excel_b = open(os.path.join("data", sel_b), "rb")
             else:
                 excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
