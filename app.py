@@ -457,7 +457,7 @@ def main():
                 sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
                 import datetime
                 fecha_mod = os.path.getmtime(os.path.join("data", sel_b))
-                fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y %H:%M")
+                fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y")
                 st.caption(f"Última actualización: {fecha_str}")
                 excel_b = open(os.path.join("data", sel_b), "rb")
             else:
