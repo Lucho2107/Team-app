@@ -518,23 +518,23 @@ def main():
     with tab1:
         with st.sidebar:
             st.markdown("---")
-            st.markdown("## Graficas de Equipos")
-            # ── Selector de archivo: preloaded o upload ──
-            archivos_data = []
-            if os.path.exists("data"):
-                archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
+            with st.expander("⚽ Graficas de Equipos", expanded=True):
+                # ── Selector de archivo: preloaded o upload ──
+                archivos_data = []
+                if os.path.exists("data"):
+                    archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
 
-            fuente_b = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_b") if archivos_data else "Subir archivo"
+                fuente_b = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_b") if archivos_data else "Subir archivo"
 
-            if fuente_b == "Seleccionar archivo guardado" and archivos_data:
-                sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
-                import datetime
-                fecha_mod = os.path.getmtime(os.path.join("data", sel_b))
-                fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y")
-                st.caption(f"Última actualización: {fecha_str}")
-                excel_b = open(os.path.join("data", sel_b), "rb")
-            else:
-                excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
+                if fuente_b == "Seleccionar archivo guardado" and archivos_data:
+                    sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
+                    import datetime
+                    fecha_mod = os.path.getmtime(os.path.join("data", sel_b))
+                    fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y")
+                    st.caption(f"Última actualización: {fecha_str}")
+                    excel_b = open(os.path.join("data", sel_b), "rb")
+                else:
+                    excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
 
         if excel_b is None:
             st.info("Sube tu Excel en el panel izquierdo.")
@@ -551,29 +551,30 @@ def main():
                 st.warning("El Excel no tiene datos numéricos.")
             else:
                 with st.sidebar:
-                    tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
+                    with st.expander("⚽ Graficas de Equipos", expanded=True):
+                        tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
 
-                    if tipo_graf == "Barras":
-                        st.markdown("---")
-                        var_b  = st.selectbox("Variable a graficar", vars_b, key="var_b")
-                        eq_b   = st.selectbox("Equipo a destacar", equipos_b, key="eq_b")
-                        c1, c2 = st.columns(2)
-                        cd_b   = c1.color_picker("Destacado", "#F39C12", key="cd_b")
-                        cn_b   = c2.color_picker("Resto", "#2C3E50", key="cn_b")
-                        ori_b  = st.radio("Orientacion", ["Vertical", "Horizontal"], key="ori_b")
-                        ord_b  = st.radio("Orden", ["Mayor a menor", "Menor a mayor"], key="ord_b")
-                        st.markdown("---")
-                        st.markdown("## Logos")
-                        logos_dir = "Logos"
-                        logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
-                    else:
-                        st.markdown("---")
-                        var_x_d = st.selectbox("Variable eje X", vars_b, key="vx_d", index=0)
-                        var_y_d = st.selectbox("Variable eje Y", vars_b, key="vy_d",
-                                               index=min(1, len(vars_b)-1))
-                        logos_dir = "Logos"
-                        logo_sz_d = st.slider("Tamano logos (px)", 10, 80, 35, 5, key="logo_d")
-                        linea_d   = st.toggle("Mostrar lineas de promedio", value=True, key="ld_d")
+                        if tipo_graf == "Barras":
+                            st.markdown("---")
+                            var_b  = st.selectbox("Variable a graficar", vars_b, key="var_b")
+                            eq_b   = st.selectbox("Equipo a destacar", equipos_b, key="eq_b")
+                            c1, c2 = st.columns(2)
+                            cd_b   = c1.color_picker("Destacado", "#F39C12", key="cd_b")
+                            cn_b   = c2.color_picker("Resto", "#2C3E50", key="cn_b")
+                            ori_b  = st.radio("Orientacion", ["Vertical", "Horizontal"], key="ori_b")
+                            ord_b  = st.radio("Orden", ["Mayor a menor", "Menor a mayor"], key="ord_b")
+                            st.markdown("---")
+                            st.markdown("**Logos**")
+                            logos_dir = "Logos"
+                            logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
+                        else:
+                            st.markdown("---")
+                            var_x_d = st.selectbox("Variable eje X", vars_b, key="vx_d", index=0)
+                            var_y_d = st.selectbox("Variable eje Y", vars_b, key="vy_d",
+                                                   index=min(1, len(vars_b)-1))
+                            logos_dir = "Logos"
+                            logo_sz_d = st.slider("Tamano logos (px)", 10, 80, 35, 5, key="logo_d")
+                            linea_d   = st.toggle("Mostrar lineas de promedio", value=True, key="ld_d")
 
                 # ── Renderizar grafica ──
                 if tipo_graf == "Barras":
@@ -619,8 +620,8 @@ def main():
     with tab2:
         with st.sidebar:
             st.markdown("---")
-            st.markdown("## Timelapse")
-            excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
+            with st.expander("⏱ Timelapse", expanded=True):
+                excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
 
         if excel_t is None:
             st.info("Sube tu Excel de Timelapse en el panel izquierdo.")
@@ -633,32 +634,33 @@ def main():
             total_partidos = len(df_team)
 
             with st.sidebar:
-                # ── Cuántos partidos mostrar ──
-                n_partidos = st.slider(
-                    "Numero de partidos",
-                    min_value=1,
-                    max_value=total_partidos,
-                    value=min(15, total_partidos),
-                    step=1,
-                    help="Los partidos se toman de arriba hacia abajo en el Excel (más recientes primero)"
-                )
+                with st.expander("⏱ Timelapse", expanded=True):
+                    # ── Cuántos partidos mostrar ──
+                    n_partidos = st.slider(
+                        "Numero de partidos",
+                        min_value=1,
+                        max_value=total_partidos,
+                        value=min(15, total_partidos),
+                        step=1,
+                        help="Los partidos se toman de arriba hacia abajo en el Excel (más recientes primero)"
+                    )
 
-                st.markdown("**Variable del equipo**")
-                var_eq = st.selectbox("Variable equipo", num_cols, key="ve_t")
+                    st.markdown("**Variable del equipo**")
+                    var_eq = st.selectbox("Variable equipo", num_cols, key="ve_t")
 
-                st.markdown("**Variable del rival (opcional)**")
-                opc_riv = ["— Solo equipo —"] + num_cols
-                sel_riv = st.selectbox("Variable rival", opc_riv, key="vr_t")
-                var_riv = None if sel_riv == "— Solo equipo —" else sel_riv
+                    st.markdown("**Variable del rival (opcional)**")
+                    opc_riv = ["— Solo equipo —"] + num_cols
+                    sel_riv = st.selectbox("Variable rival", opc_riv, key="vr_t")
+                    var_riv = None if sel_riv == "— Solo equipo —" else sel_riv
 
-                c1, c2   = st.columns(2)
-                col_eq   = c1.color_picker("Color equipo", "#1A9ED4", key="ce_t")
-                col_riv  = c2.color_picker("Color rival",  "#E74C3C", key="cr_t")
+                    c1, c2   = st.columns(2)
+                    col_eq   = c1.color_picker("Color equipo", "#1A9ED4", key="ce_t")
+                    col_riv  = c2.color_picker("Color rival",  "#E74C3C", key="cr_t")
 
-                mostrar_vals = st.toggle("Mostrar valores en linea", value=True, key="mv_t")
+                    mostrar_vals = st.toggle("Mostrar valores en linea", value=True, key="mv_t")
 
-                st.markdown("**Filtro de partidos**")
-                filtro_loc = st.radio("Condicion", ["Todos", "Local", "Visitante"], key="fl_t")
+                    st.markdown("**Filtro de partidos**")
+                    filtro_loc = st.radio("Condicion", ["Todos", "Local", "Visitante"], key="fl_t")
 
             # Tomar los primeros N del Excel (más recientes) y luego invertir para mostrar antiguo→reciente
             df_team_n  = df_team.head(n_partidos).iloc[::-1].reset_index(drop=True)
