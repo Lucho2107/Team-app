@@ -551,7 +551,7 @@ def main():
                 st.warning("El Excel no tiene datos numéricos.")
             else:
                 with st.sidebar:
-                    with st.expander("Graficas de Equipos", expanded=True):
+                    with st.expander("Opciones de grafica", expanded=True):
                         tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
 
                         if tipo_graf == "Barras":
@@ -616,7 +616,22 @@ def main():
         with st.sidebar:
             st.markdown("---")
             with st.expander("Timelapse", expanded=True):
-                excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
+                # ── Selector de archivo ──
+                archivos_tl = []
+                if os.path.exists("data_timelapse"):
+                    archivos_tl = [f for f in os.listdir("data_timelapse") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
+
+                fuente_t = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_t") if archivos_tl else "Subir archivo"
+
+                if fuente_t == "Seleccionar archivo guardado" and archivos_tl:
+                    sel_t = st.selectbox("Archivo disponible", archivos_tl, key="sel_t")
+                    import datetime
+                    fecha_mod_t = os.path.getmtime(os.path.join("data_timelapse", sel_t))
+                    fecha_str_t = datetime.datetime.fromtimestamp(fecha_mod_t).strftime("%d/%m/%Y")
+                    st.caption(f"Última actualización: {fecha_str_t}")
+                    excel_t = open(os.path.join("data_timelapse", sel_t), "rb")
+                else:
+                    excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
 
         if excel_t is None:
             st.info("Sube tu Excel de Timelapse en el panel izquierdo.")
