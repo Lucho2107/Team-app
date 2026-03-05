@@ -10,7 +10,7 @@ from io import BytesIO
 # ──────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────
-st.set_page_config(page_title="Team App", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="Team App", layout="wide")
 
 
 # ──────────────────────────────────────────────
