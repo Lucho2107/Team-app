@@ -669,32 +669,36 @@ def main():
     if "lang" not in st.session_state:
         st.session_state.lang = "es"
 
+    # Capturar cambio de idioma via query param
+    params = st.query_params
+    if "lang" in params:
+        st.session_state.lang = params["lang"]
+
+    lang = st.session_state.lang
+    T    = UI[lang]
+
+    # ── Botones de idioma estilo imagen (top right) ──
+    es_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "es" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
+    en_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "en" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
+    st.markdown(f"""
+    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px;">
+        <a href="?lang=es" style="text-decoration:none;">
+            <button style="padding:6px 18px;border-radius:5px;font-size:13px;cursor:pointer;{es_style}">ES</button>
+        </a>
+        <a href="?lang=en" style="text-decoration:none;">
+            <button style="padding:6px 18px;border-radius:5px;font-size:13px;cursor:pointer;{en_style}">EN</button>
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
     with st.sidebar:
-        # ── Toggle de idioma ──
-        col_a, col_b = st.columns(2)
-        if col_a.button("ES", use_container_width=True,
-                        type="primary" if st.session_state.lang == "es" else "secondary"):
-            st.session_state.lang = "es"
-            st.rerun()
-        if col_b.button("EN", use_container_width=True,
-                        type="primary" if st.session_state.lang == "en" else "secondary"):
-            st.session_state.lang = "en"
-            st.rerun()
-
-        lang = st.session_state.lang
-        T = UI[lang]
-
-        st.markdown("---")
         st.markdown(f"## {T['fondo']}")
         fondo_opts = [T["oscuro"], T["blanco"]]
         fondo_sel  = st.radio(T["color_fondo"], fondo_opts)
         fondo = "Oscuro" if fondo_sel == T["oscuro"] else "Blanco"
         st.session_state.fondo = fondo
 
-    lang = st.session_state.lang
-    T    = UI[lang]
     aplicar_css(fondo)
-
     tab1, tab2 = st.tabs([T["tab1"], T["tab2"]])
 
     # ════════════════════════════════════════
