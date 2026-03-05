@@ -10,7 +10,7 @@ from io import BytesIO
 # ──────────────────────────────────────────────
 # CONFIG
 # ──────────────────────────────────────────────
-st.set_page_config(page_title="Team App", layout="wide")
+st.set_page_config(page_title="Team App", page_icon="⚽", layout="wide")
 
 
 # ──────────────────────────────────────────────
@@ -677,19 +677,18 @@ def main():
     lang = st.session_state.lang
     T    = UI[lang]
 
-    # ── Botones de idioma estilo imagen (top right) ──
-    es_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "es" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
-    en_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "en" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
-    st.markdown(f"""
-    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px;">
-        <a href="?lang=es" style="text-decoration:none;">
-            <button style="padding:6px 18px;border-radius:5px;font-size:13px;cursor:pointer;{es_style}">ES</button>
-        </a>
-        <a href="?lang=en" style="text-decoration:none;">
-            <button style="padding:6px 18px;border-radius:5px;font-size:13px;cursor:pointer;{en_style}">EN</button>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Botones de idioma (cambian en la misma pestaña) ──
+    _, col_es, col_en = st.columns([10, 0.5, 0.5])
+    with col_es:
+        if st.button("ES", key="btn_es", type="primary" if lang == "es" else "secondary"):
+            st.query_params["lang"] = "es"
+            st.session_state.lang = "es"
+            st.rerun()
+    with col_en:
+        if st.button("EN", key="btn_en", type="primary" if lang == "en" else "secondary"):
+            st.query_params["lang"] = "en"
+            st.session_state.lang = "en"
+            st.rerun()
 
     with st.sidebar:
         st.markdown(f"## {T['fondo']}")
