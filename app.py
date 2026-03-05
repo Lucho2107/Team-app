@@ -14,6 +14,148 @@ st.set_page_config(page_title="Team App", page_icon="⚽", layout="wide")
 
 
 # ──────────────────────────────────────────────
+# TRADUCCIONES
+# ──────────────────────────────────────────────
+UI = {
+    "es": {
+        "tab1": "Graficas de Equipos", "tab2": "Timelapse",
+        "fondo": "Fondo", "color_fondo": "Color de fondo", "oscuro": "Oscuro", "blanco": "Blanco",
+        "fuente_archivo": "Fuente del archivo",
+        "sel_guardado": "Seleccionar archivo guardado", "subir": "Subir archivo",
+        "archivo_disp": "Archivo disponible", "ultima_act": "Última actualización",
+        "sube_excel": "Sube Excel", "sube_excel_t": "Sube Excel de Timelapse",
+        "sin_excel": "Sube tu Excel en el panel izquierdo.",
+        "sin_datos": "El Excel no tiene datos numéricos.",
+        "tipo_graf": "Tipo de grafica", "barras": "Barras", "dispersion": "Dispersion (2 variables)",
+        "variable": "Variable a graficar", "equipo_dest": "Equipo a destacar",
+        "destacado": "Destacado", "resto": "Resto",
+        "orientacion": "Orientacion", "vertical": "Vertical", "horizontal": "Horizontal",
+        "orden": "Orden", "mayor_menor": "Mayor a menor", "menor_mayor": "Menor a mayor",
+        "logos": "Logos", "tamano_logos": "Tamano logos (px)",
+        "var_x": "Variable eje X", "var_y": "Variable eje Y",
+        "lineas_prom": "Mostrar lineas de promedio",
+        "descargar": "Descargar imagen", "copiar": "Click derecho → Copiar imagen",
+        "ver_tabla": "Ver tabla",
+        "opciones_graf": "Opciones de grafica",
+        "graf_equipos": "Graficas de Equipos",
+        "num_partidos": "Numero de partidos",
+        "var_equipo": "Variable del equipo", "var_equipo_sel": "Variable equipo",
+        "var_rival_opc": "Variable del rival (opcional)", "var_rival_sel": "Variable rival",
+        "solo_equipo": "— Solo equipo —",
+        "color_eq": "Color equipo", "color_riv": "Color rival",
+        "mostrar_vals": "Mostrar valores en linea",
+        "filtro": "Filtro de partidos", "condicion": "Condicion",
+        "todos": "Todos", "local": "Local", "visitante": "Visitante",
+        "ver_datos": "Ver datos",
+        "prom": "Prom.", "prom_general": "Prom. general", "rival": "Rival",
+        "ultimos": "Ultimos", "partidos": "partidos",
+        "ayuda_partidos": "Los partidos se toman de arriba hacia abajo en el Excel (más recientes primero)",
+    },
+    "en": {
+        "tab1": "Team Charts", "tab2": "Timelapse",
+        "fondo": "Background", "color_fondo": "Background color", "oscuro": "Dark", "blanco": "White",
+        "fuente_archivo": "File source",
+        "sel_guardado": "Select saved file", "subir": "Upload file",
+        "archivo_disp": "Available file", "ultima_act": "Last updated",
+        "sube_excel": "Upload Excel", "sube_excel_t": "Upload Timelapse Excel",
+        "sin_excel": "Upload your Excel in the left panel.",
+        "sin_datos": "The Excel has no numeric data.",
+        "tipo_graf": "Chart type", "barras": "Bar chart", "dispersion": "Scatter (2 variables)",
+        "variable": "Variable to chart", "equipo_dest": "Team to highlight",
+        "destacado": "Highlighted", "resto": "Rest",
+        "orientacion": "Orientation", "vertical": "Vertical", "horizontal": "Horizontal",
+        "orden": "Order", "mayor_menor": "High to low", "menor_mayor": "Low to high",
+        "logos": "Logos", "tamano_logos": "Logo size (px)",
+        "var_x": "X axis variable", "var_y": "Y axis variable",
+        "lineas_prom": "Show average lines",
+        "descargar": "Download image", "copiar": "Right click → Copy image",
+        "ver_tabla": "View table",
+        "opciones_graf": "Chart options",
+        "graf_equipos": "Team Charts",
+        "num_partidos": "Number of matches",
+        "var_equipo": "Team variable", "var_equipo_sel": "Team variable",
+        "var_rival_opc": "Opponent variable (optional)", "var_rival_sel": "Opponent variable",
+        "solo_equipo": "— Team only —",
+        "color_eq": "Team color", "color_riv": "Opponent color",
+        "mostrar_vals": "Show values on line",
+        "filtro": "Match filter", "condicion": "Condition",
+        "todos": "All", "local": "Home", "visitante": "Away",
+        "ver_datos": "View data",
+        "prom": "Avg.", "prom_general": "Overall avg.", "rival": "Opponent",
+        "ultimos": "Last", "partidos": "matches",
+        "ayuda_partidos": "Matches are taken top-to-bottom in Excel (most recent first)",
+    }
+}
+
+# Traducción de columnas Wyscout ES → EN
+COL_EN = {
+    'Goles': 'Goals', 'xG': 'xG', 'Remates': 'Shots', 'Remates al arco': 'Shots on Target',
+    '% Remates al arco': '% Shots on Target', 'Pases ': 'Passes', 'Pases Acertados': 'Accurate Passes',
+    '% Pases Acertados': '% Accurate Passes', 'Posesión del balón, %': 'Ball Possession %',
+    'Perdidas': 'Losses', 'Perdidas bajas': 'Low Losses', 'Perdidas Medias': 'Mid Losses',
+    'Perdidas Altas': 'High Losses', 'Recuperaciones': 'Recoveries',
+    'Recuperaciones Bajas': 'Low Recoveries', 'Recuperaciones Medias': 'Mid Recoveries',
+    'Recuperaciones Altas': 'High Recoveries', 'Duelos': 'Duels', 'Duelos ganados': 'Duels Won',
+    '% Duelos Ganados': '% Duels Won', 'Remates de fuera del área ': 'Shots Outside Box',
+    'Remates de fuera del área al arco': 'Shots Outside Box on Target',
+    '% Remates de fuera del área al arco': '% Shots Outside Box on Target',
+    'Ataques posicionales': 'Positional Attacks', 'Ataques posicionales con remate': 'Positional Attacks w/ Shot',
+    '% Ataques posicionales con remate': '% Positional Attacks w/ Shot',
+    'Contraataques': 'Counterattacks', 'Contraataques con remate': 'Counterattacks w/ Shot',
+    '% Contraataques con remate': '% Counterattacks w/ Shot',
+    'Jugadas a balón parado': 'Set Pieces', 'Jugadas a balón parado con remate': 'Set Pieces w/ Shot',
+    '% Jugadas a balón parado con remate': '% Set Pieces w/ Shot',
+    'Córneres': 'Corners', 'Córneres con remate': 'Corners w/ Shot', '%, Córneres con remate': '% Corners w/ Shot',
+    'Tiros libres': 'Free Kicks', 'Tiros libres con remate': 'Free Kicks w/ Shot',
+    '% Tiros libres con remate': '% Free Kicks w/ Shot',
+    'Penaltis': 'Penalties', 'Penaltis Marcados': 'Penalties Scored', '% Penaltis Marcados': '% Penalties Scored',
+    'Centros': 'Crosses', 'Centros precisos': 'Accurate Crosses', '% Centros Precisos': '% Accurate Crosses',
+    'Pases cruzados en profundidad completados': 'Completed Deep Crosses',
+    'Pases en profundidad completados': 'Completed Deep Passes',
+    'Entradas al área de penalti': 'Penalty Area Entries',
+    'Entradas al área de penalti (carreras)': 'Penalty Area Entries (Runs)',
+    'Entradas al área de penalti (pases cruzados)': 'Penalty Area Entries (Crosses)',
+    'Toques en el área de penalti': 'Touches in Penalty Area',
+    'Duelos ofensivos': 'Offensive Duels', 'Duelos ofensivos ganados': 'Offensive Duels Won',
+    '% Duelos ofensivos ganados': '% Offensive Duels Won', 'Fuera de juego': 'Offsides',
+    'Duelos defensivos': 'Defensive Duels', 'Duelos defensivos ganados': 'Defensive Duels Won',
+    '% Duelos defensivos ganados': '% Defensive Duels Won',
+    'Duelos aéreos ': 'Aerial Duels', 'Duelos aéreos ganados': 'Aerial Duels Won',
+    '% Duelos aéreos ganados': '% Aerial Duels Won',
+    'Entradas a ras de suelo ': 'Sliding Tackles', 'Entradas a ras de suelo logradas': 'Successful Sliding Tackles',
+    '% Entradas a ras de suelo logradas': '% Successful Sliding Tackles',
+    'Interceptaciones': 'Interceptions', 'Despejes': 'Clearances', 'Faltas': 'Fouls',
+    'Tarjetas amarillas': 'Yellow Cards', 'Tarjetas rojas': 'Red Cards',
+    'Pases hacia adelante ': 'Forward Passes', 'Pases hacia adelante logrados': 'Accurate Forward Passes',
+    '% Pases hacia adelante logrados': '% Accurate Forward Passes',
+    'Pases hacia atrás ': 'Backward Passes', 'Pases hacia atrás logrados': 'Accurate Backward Passes',
+    '% Pases hacia atrás logrados': '% Accurate Backward Passes',
+    'Pases laterales ': 'Lateral Passes', 'Pases laterales logrados': 'Accurate Lateral Passes',
+    '% Pases laterales logrados': '% Accurate Lateral Passes',
+    'Pases largos ': 'Long Passes', 'Pases largos llogrados': 'Accurate Long Passes',
+    '% Pases largos logrados': '% Accurate Long Passes',
+    'Pases en el último tercio ': 'Final Third Passes', 'Pases en el último tercio logrados': 'Accurate Final Third Passes',
+    '% Pases en el último tercio logrados': '% Accurate Final Third Passes',
+    'Pases progresivos ': 'Progressive Passes', 'Pases progresivos precisos': 'Accurate Progressive Passes',
+    '% Pases progresivos precisos': '% Accurate Progressive Passes',
+    'Desmarques ': 'Runs', 'Desmarques logrados': 'Successful Runs', '% Desmarques logrados': '% Successful Runs',
+    'Saques laterales ': 'Throw-ins', 'Saques laterales logrados': 'Accurate Throw-ins',
+    '% Saques laterales logrados': '% Accurate Throw-ins',
+    'Saques de meta': 'Goal Kicks', 'Intensidad de paso': 'Passing Intensity',
+    'Promedio pases por posesión del balón': 'Avg Passes per Possession',
+    'Lanzamiento largo %': 'Long Ball %', 'Distancia media de tiro': 'Avg Shot Distance',
+    'Longitud media pases': 'Avg Pass Length', 'PPDA': 'PPDA',
+    'Non Penalty xG': 'Non Penalty xG',
+}
+
+def traducir_col(col, lang):
+    """Traduce nombre de columna si lang es 'en'."""
+    if lang == "en":
+        return COL_EN.get(col.strip(), col)
+    return col
+
+
+# ──────────────────────────────────────────────
 # HELPERS
 # ──────────────────────────────────────────────
 def limpiar(texto):
@@ -524,15 +666,36 @@ def grafico_timelapse(df_team_sel, df_rival_sel,
 def main():
     if "fondo" not in st.session_state:
         st.session_state.fondo = "Oscuro"
+    if "lang" not in st.session_state:
+        st.session_state.lang = "es"
 
     with st.sidebar:
-        st.markdown("## Fondo")
-        fondo = st.radio("Color de fondo", ["Oscuro", "Blanco"])
+        # ── Toggle de idioma ──
+        col_a, col_b = st.columns(2)
+        if col_a.button("ES", use_container_width=True,
+                        type="primary" if st.session_state.lang == "es" else "secondary"):
+            st.session_state.lang = "es"
+            st.rerun()
+        if col_b.button("EN", use_container_width=True,
+                        type="primary" if st.session_state.lang == "en" else "secondary"):
+            st.session_state.lang = "en"
+            st.rerun()
+
+        lang = st.session_state.lang
+        T = UI[lang]
+
+        st.markdown("---")
+        st.markdown(f"## {T['fondo']}")
+        fondo_opts = [T["oscuro"], T["blanco"]]
+        fondo_sel  = st.radio(T["color_fondo"], fondo_opts)
+        fondo = "Oscuro" if fondo_sel == T["oscuro"] else "Blanco"
         st.session_state.fondo = fondo
 
+    lang = st.session_state.lang
+    T    = UI[lang]
     aplicar_css(fondo)
 
-    tab1, tab2 = st.tabs(["Graficas de Equipos", "Timelapse"])
+    tab1, tab2 = st.tabs([T["tab1"], T["tab2"]])
 
     # ════════════════════════════════════════
     # TAB 1
@@ -540,95 +703,108 @@ def main():
     with tab1:
         with st.sidebar:
             st.markdown("---")
-            with st.expander("Graficas de Equipos", expanded=True):
-                # ── Selector de archivo: preloaded o upload ──
+            with st.expander(T["graf_equipos"], expanded=True):
                 archivos_data = []
                 if os.path.exists("data"):
                     archivos_data = [f for f in os.listdir("data") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
 
-                fuente_b = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_b") if archivos_data else "Subir archivo"
+                fuente_b = st.radio(T["fuente_archivo"], [T["sel_guardado"], T["subir"]], key="fuente_b") if archivos_data else T["subir"]
 
-                if fuente_b == "Seleccionar archivo guardado" and archivos_data:
-                    sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
+                if fuente_b == T["sel_guardado"] and archivos_data:
+                    sel_b  = st.selectbox(T["archivo_disp"], archivos_data, key="sel_b")
                     import datetime
                     fecha_str = fecha_ultimo_commit(os.path.join("data", sel_b))
-                    st.caption(f"Última actualización: {fecha_str}")
+                    st.caption(f"{T['ultima_act']}: {fecha_str}")
                     excel_b = open(os.path.join("data", sel_b), "rb")
                 else:
-                    excel_b = st.file_uploader("Sube Excel", type=["xlsx","xls"], key="barras")
+                    excel_b = st.file_uploader(T["sube_excel"], type=["xlsx","xls"], key="barras")
 
         if excel_b is None:
-            st.info("Sube tu Excel en el panel izquierdo.")
+            st.info(T["sin_excel"])
         else:
             try:
                 df_b = cargar_excel_barras(excel_b)
             except Exception as e:
                 st.error(f"Error: {e}"); st.stop()
 
-            equipos_b  = sorted(df_b.index.dropna().tolist())
-            vars_b     = [c for c in df_b.columns if df_b[c].notna().any()]
+            equipos_b = sorted(df_b.index.dropna().tolist())
+            vars_b    = [c for c in df_b.columns if df_b[c].notna().any()]
+            vars_disp = [traducir_col(c, lang) for c in vars_b]
+            col_map   = dict(zip(vars_disp, vars_b))  # display → original
 
             if not vars_b:
-                st.warning("El Excel no tiene datos numéricos.")
+                st.warning(T["sin_datos"])
             else:
                 with st.sidebar:
-                    with st.expander("Opciones de grafica", expanded=True):
-                        tipo_graf = st.radio("Tipo de grafica", ["Barras", "Dispersion (2 variables)"], key="tipo_b")
+                    with st.expander(T["opciones_graf"], expanded=True):
+                        tipo_sel  = st.radio(T["tipo_graf"], [T["barras"], T["dispersion"]], key="tipo_b")
+                        tipo_graf = "Barras" if tipo_sel == T["barras"] else "Dispersion"
 
                         if tipo_graf == "Barras":
                             st.markdown("---")
-                            var_b  = st.selectbox("Variable a graficar", vars_b, key="var_b")
-                            eq_b   = st.selectbox("Equipo a destacar", equipos_b, key="eq_b")
-                            c1, c2 = st.columns(2)
-                            cd_b   = c1.color_picker("Destacado", "#F39C12", key="cd_b")
-                            cn_b   = c2.color_picker("Resto", "#2C3E50", key="cn_b")
-                            ori_b  = st.radio("Orientacion", ["Vertical", "Horizontal"], key="ori_b")
-                            ord_b  = st.radio("Orden", ["Mayor a menor", "Menor a mayor"], key="ord_b")
+                            var_b_disp = st.selectbox(T["variable"], vars_disp, key="var_b")
+                            var_b      = col_map[var_b_disp]
+                            eq_b       = st.selectbox(T["equipo_dest"], equipos_b, key="eq_b")
+                            c1, c2     = st.columns(2)
+                            cd_b       = c1.color_picker(T["destacado"], "#F39C12", key="cd_b")
+                            cn_b       = c2.color_picker(T["resto"], "#2C3E50", key="cn_b")
+                            ori_sel    = st.radio(T["orientacion"], [T["vertical"], T["horizontal"]], key="ori_b")
+                            ori_b      = "Vertical" if ori_sel == T["vertical"] else "Horizontal"
+                            ord_sel    = st.radio(T["orden"], [T["mayor_menor"], T["menor_mayor"]], key="ord_b")
+                            ord_b      = "Mayor a menor" if ord_sel == T["mayor_menor"] else "Menor a mayor"
                             st.markdown("---")
-                            st.markdown("**Logos**")
-                            logos_dir = "Logos"
-                            logo_sz   = st.slider("Tamano logos (px)", 0, 100, 40, 5, key="logo_b")
+                            st.markdown(f"**{T['logos']}**")
+                            logos_dir  = "Logos"
+                            logo_sz    = st.slider(T["tamano_logos"], 0, 100, 40, 5, key="logo_b")
                         else:
                             st.markdown("---")
-                            var_x_d = st.selectbox("Variable eje X", vars_b, key="vx_d", index=0)
-                            var_y_d = st.selectbox("Variable eje Y", vars_b, key="vy_d",
-                                                   index=min(1, len(vars_b)-1))
-                            logos_dir = "Logos"
-                            logo_sz_d = st.slider("Tamano logos (px)", 10, 80, 35, 5, key="logo_d")
-                            linea_d   = st.toggle("Mostrar lineas de promedio", value=True, key="ld_d")
+                            var_x_disp = st.selectbox(T["var_x"], vars_disp, key="vx_d", index=0)
+                            var_y_disp = st.selectbox(T["var_y"], vars_disp, key="vy_d", index=min(1, len(vars_disp)-1))
+                            var_x_d    = col_map[var_x_disp]
+                            var_y_d    = col_map[var_y_disp]
+                            logos_dir  = "Logos"
+                            logo_sz_d  = st.slider(T["tamano_logos"], 10, 80, 35, 5, key="logo_d")
+                            linea_d    = st.toggle(T["lineas_prom"], value=True, key="ld_d")
 
-                # ── Renderizar grafica ──
                 if tipo_graf == "Barras":
                     fig_b = grafico_barras(df_b, var_b, eq_b, cd_b, cn_b, ori_b, ord_b, logo_sz, logos_dir, fondo)
+                    # Traducir título en gráfica
+                    fig_b.update_layout(title_text=traducir_col(var_b, lang))
                     st.plotly_chart(fig_b, use_container_width=True,
-                        config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b, "scale": 2}})
+                        config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b_disp, "scale": 2}})
 
-                    with st.expander("Descargar imagen"):
+                    with st.expander(T["descargar"]):
                         jpeg_b = generar_jpeg(fig_b, w=1400, h=700)
                         if jpeg_b:
-                            st.image(jpeg_b, caption="Click derecho → Copiar imagen", use_container_width=True)
+                            st.image(jpeg_b, caption=T["copiar"], use_container_width=True)
 
-                    with st.expander("Ver tabla"):
+                    with st.expander(T["ver_tabla"]):
                         tab_b = df_b[[var_b]].dropna().sort_values(var_b, ascending=False)
+                        tab_b.columns = [traducir_col(var_b, lang)]
                         def res_b(row):
                             return [f"background-color: {cd_b}55"] * len(row) if row.name == eq_b else [""] * len(row)
                         st.dataframe(tab_b.style.apply(res_b, axis=1).format("{:.2f}"), use_container_width=True)
 
                 else:
                     fig_d = grafico_dispersion(df_b, var_x_d, var_y_d, logo_sz_d, logos_dir, fondo, linea_d)
+                    # Traducir ejes y título
+                    fig_d.update_layout(
+                        title_text=f"{traducir_col(var_x_d, lang)}  vs  {traducir_col(var_y_d, lang)}",
+                        xaxis_title=traducir_col(var_x_d, lang),
+                        yaxis_title=traducir_col(var_y_d, lang),
+                    )
                     st.plotly_chart(fig_d, use_container_width=True,
-                        config={"toImageButtonOptions": {"format": "jpeg", "filename": f"{var_x_d}_vs_{var_y_d}", "scale": 2}})
+                        config={"toImageButtonOptions": {"format": "jpeg", "filename": f"{var_x_disp}_vs_{var_y_disp}", "scale": 2}})
 
-                    with st.expander("Descargar imagen"):
+                    with st.expander(T["descargar"]):
                         jpeg_d = generar_jpeg(fig_d, w=1200, h=800)
                         if jpeg_d:
-                            st.image(jpeg_d, caption="Click derecho → Copiar imagen", use_container_width=True)
+                            st.image(jpeg_d, caption=T["copiar"], use_container_width=True)
 
-                    with st.expander("Ver tabla"):
-                        st.dataframe(
-                            df_b[[var_x_d, var_y_d]].dropna().sort_values(var_x_d, ascending=False).style.format("{:.2f}"),
-                            use_container_width=True
-                        )
+                    with st.expander(T["ver_tabla"]):
+                        tab_d = df_b[[var_x_d, var_y_d]].dropna().sort_values(var_x_d, ascending=False).copy()
+                        tab_d.columns = [traducir_col(var_x_d, lang), traducir_col(var_y_d, lang)]
+                        st.dataframe(tab_d.style.format("{:.2f}"), use_container_width=True)
 
     # ════════════════════════════════════════
     # TAB 2 — TIMELAPSE
@@ -637,24 +813,23 @@ def main():
         with st.sidebar:
             st.markdown("---")
             with st.expander("Timelapse", expanded=True):
-                # ── Selector de archivo ──
                 archivos_tl = []
                 if os.path.exists("data_timelapse"):
                     archivos_tl = [f for f in os.listdir("data_timelapse") if f.endswith((".xlsx", ".xls")) and not f.startswith("~$")]
 
-                fuente_t = st.radio("Fuente del archivo", ["Seleccionar archivo guardado", "Subir archivo"], key="fuente_t") if archivos_tl else "Subir archivo"
+                fuente_t = st.radio(T["fuente_archivo"], [T["sel_guardado"], T["subir"]], key="fuente_t") if archivos_tl else T["subir"]
 
-                if fuente_t == "Seleccionar archivo guardado" and archivos_tl:
-                    sel_t = st.selectbox("Archivo disponible", archivos_tl, key="sel_t")
+                if fuente_t == T["sel_guardado"] and archivos_tl:
+                    sel_t = st.selectbox(T["archivo_disp"], archivos_tl, key="sel_t")
                     import datetime
                     fecha_str_t = fecha_ultimo_commit(os.path.join("data_timelapse", sel_t))
-                    st.caption(f"Última actualización: {fecha_str_t}")
+                    st.caption(f"{T['ultima_act']}: {fecha_str_t}")
                     excel_t = open(os.path.join("data_timelapse", sel_t), "rb")
                 else:
-                    excel_t = st.file_uploader("Sube Excel de Timelapse", type=["xlsx","xls"], key="time")
+                    excel_t = st.file_uploader(T["sube_excel_t"], type=["xlsx","xls"], key="time")
 
         if excel_t is None:
-            st.info("Sube tu Excel de Timelapse en el panel izquierdo.")
+            st.info(T["sin_excel"])
         else:
             try:
                 df_team, df_rival, num_cols = cargar_excel_timelapse(excel_t)
@@ -662,64 +837,63 @@ def main():
                 st.error(f"Error: {e}"); st.stop()
 
             total_partidos = len(df_team)
+            num_cols_disp  = [traducir_col(c, lang) for c in num_cols]
+            col_map_t      = dict(zip(num_cols_disp, num_cols))
 
             with st.sidebar:
                 with st.expander("Timelapse", expanded=True):
-                    # ── Cuántos partidos mostrar ──
                     n_partidos = st.slider(
-                        "Numero de partidos",
-                        min_value=1,
-                        max_value=total_partidos,
-                        value=min(15, total_partidos),
-                        step=1,
-                        help="Los partidos se toman de arriba hacia abajo en el Excel (más recientes primero)"
+                        T["num_partidos"], min_value=1, max_value=total_partidos,
+                        value=min(15, total_partidos), step=1, help=T["ayuda_partidos"]
                     )
 
-                    st.markdown("**Variable del equipo**")
-                    var_eq = st.selectbox("Variable equipo", num_cols, key="ve_t")
+                    st.markdown(f"**{T['var_equipo']}**")
+                    var_eq_disp = st.selectbox(T["var_equipo_sel"], num_cols_disp, key="ve_t")
+                    var_eq      = col_map_t[var_eq_disp]
 
-                    st.markdown("**Variable del rival (opcional)**")
-                    opc_riv = ["— Solo equipo —"] + num_cols
-                    sel_riv = st.selectbox("Variable rival", opc_riv, key="vr_t")
-                    var_riv = None if sel_riv == "— Solo equipo —" else sel_riv
+                    st.markdown(f"**{T['var_rival_opc']}**")
+                    opc_riv     = [T["solo_equipo"]] + num_cols_disp
+                    sel_riv     = st.selectbox(T["var_rival_sel"], opc_riv, key="vr_t")
+                    var_riv     = None if sel_riv == T["solo_equipo"] else col_map_t[sel_riv]
+                    var_riv_disp = None if sel_riv == T["solo_equipo"] else sel_riv
 
-                    c1, c2   = st.columns(2)
-                    col_eq   = c1.color_picker("Color equipo", "#1A9ED4", key="ce_t")
-                    col_riv  = c2.color_picker("Color rival",  "#E74C3C", key="cr_t")
+                    c1, c2      = st.columns(2)
+                    col_eq      = c1.color_picker(T["color_eq"], "#1A9ED4", key="ce_t")
+                    col_riv     = c2.color_picker(T["color_riv"], "#E74C3C", key="cr_t")
 
-                    mostrar_vals = st.toggle("Mostrar valores en linea", value=True, key="mv_t")
+                    mostrar_vals = st.toggle(T["mostrar_vals"], value=True, key="mv_t")
 
-                    st.markdown("**Filtro de partidos**")
-                    filtro_loc = st.radio("Condicion", ["Todos", "Local", "Visitante"], key="fl_t")
+                    st.markdown(f"**{T['filtro']}**")
+                    cond_opts   = [T["todos"], T["local"], T["visitante"]]
+                    filtro_sel  = st.radio(T["condicion"], cond_opts, key="fl_t")
+                    if filtro_sel == T["local"]:
+                        filtro_loc, label_filtro = "Local", T["local"]
+                    elif filtro_sel == T["visitante"]:
+                        filtro_loc, label_filtro = "Visitante", T["visitante"]
+                    else:
+                        filtro_loc, label_filtro = "Todos", ""
 
-            # Tomar los primeros N del Excel (más recientes) y luego invertir para mostrar antiguo→reciente
             df_team_n  = df_team.head(n_partidos).iloc[::-1].reset_index(drop=True)
             df_rival_n = df_rival.head(n_partidos).iloc[::-1].reset_index(drop=True)
 
-            # Promedios globales (todos los N partidos) para mostrar cuando hay filtro
             prom_global_eq  = df_team_n[var_eq].dropna().mean() if var_eq in df_team_n.columns else None
             prom_global_riv = df_rival_n[var_riv].dropna().mean() if var_riv and var_riv in df_rival_n.columns else None
 
-            # Aplicar filtro local/visitante
             if filtro_loc == "Local":
                 mask = df_team_n["_es_local"] == True
-                label_filtro = "Local"
             elif filtro_loc == "Visitante":
                 mask = df_team_n["_es_local"] == False
-                label_filtro = "Visitante"
             else:
                 mask = pd.Series([True] * len(df_team_n))
-                label_filtro = ""
 
             df_team_sel  = df_team_n[mask].reset_index(drop=True)
             df_rival_sel = df_rival_n[mask].reset_index(drop=True)
 
-            nombre_eq = df_team_sel["_equipo_nombre"].iloc[0] \
-                if "_equipo_nombre" in df_team_sel.columns else "Equipo"
+            nombre_eq = df_team_sel["_equipo_nombre"].iloc[0] if "_equipo_nombre" in df_team_sel.columns else "Equipo"
 
-            label_riv = f"  vs  {var_riv} Rival" if var_riv else ""
-            filtro_txt = f" · {filtro_loc}" if filtro_loc != "Todos" else ""
-            st.markdown(f"### {nombre_eq} — {var_eq}{label_riv}  ·  Ultimos {n_partidos} partidos{filtro_txt}")
+            label_riv  = f"  vs  {var_riv_disp} {T['rival']}" if var_riv else ""
+            filtro_txt = f" · {label_filtro}" if label_filtro else ""
+            st.markdown(f"### {nombre_eq} — {var_eq_disp}{label_riv}  ·  {T['ultimos']} {n_partidos} {T['partidos']}{filtro_txt}")
 
             fig_t = grafico_timelapse(
                 df_team_sel, df_rival_sel,
@@ -730,25 +904,42 @@ def main():
                 prom_global_riv=prom_global_riv if filtro_loc != "Todos" else None,
                 label_filtro=label_filtro,
             )
-            st.plotly_chart(fig_t, use_container_width=True,
-                config={"toImageButtonOptions": {"format": "jpeg", "filename": f"timelapse_{var_eq}", "scale": 2}})
 
-            with st.expander("Descargar imagen"):
+            # Traducir leyenda y título del timelapse
+            prom_lbl = T["prom"]
+            prom_gen_lbl = T["prom_general"]
+            for trace in fig_t.data:
+                if trace.name:
+                    n2 = trace.name
+                    n2 = n2.replace("Prom. general", prom_gen_lbl).replace("Prom. ", prom_lbl + " ")
+                    n2 = n2.replace(var_eq, var_eq_disp)
+                    if var_riv and var_riv_disp:
+                        n2 = n2.replace(var_riv + " Rival", var_riv_disp + " " + T["rival"])
+                        n2 = n2.replace(var_riv, var_riv_disp)
+                    n2 = n2.replace("Rival –", T["rival"] + " –")
+                    trace.name = n2
+            fig_t.update_layout(title_text=f"{var_eq_disp}" + (f"  vs  {var_riv_disp}" if var_riv else ""))
+
+            st.plotly_chart(fig_t, use_container_width=True,
+                config={"toImageButtonOptions": {"format": "jpeg", "filename": f"timelapse_{var_eq_disp}", "scale": 2}})
+
+            with st.expander(T["descargar"]):
                 jpeg_t = generar_jpeg(fig_t, w=1400, h=600)
                 if jpeg_t:
-                    st.image(jpeg_t, caption="Click derecho → Copiar imagen", use_container_width=True)
+                    st.image(jpeg_t, caption=T["copiar"], use_container_width=True)
 
-            with st.expander("Ver datos"):
+            with st.expander(T["ver_datos"]):
                 cols_ver = ["Partido", var_eq]
                 if var_riv:
                     df_riv_view = df_rival_sel[["Partido", var_riv]].copy()
-                    df_riv_view.columns = ["Partido", f"{var_riv} Rival"]
-                    st.dataframe(
-                        df_team_sel[cols_ver].merge(df_riv_view, on="Partido"),
-                        use_container_width=True
-                    )
+                    df_riv_view.columns = ["Partido", f"{var_riv_disp} {T['rival']}"]
+                    df_show = df_team_sel[cols_ver].merge(df_riv_view, on="Partido")
+                    df_show.columns = ["Partido", var_eq_disp, f"{var_riv_disp} {T['rival']}"]
+                    st.dataframe(df_show, use_container_width=True)
                 else:
-                    st.dataframe(df_team_sel[cols_ver], use_container_width=True)
+                    df_show = df_team_sel[cols_ver].copy()
+                    df_show.columns = ["Partido", var_eq_disp]
+                    st.dataframe(df_show, use_container_width=True)
 
 
 if __name__ == "__main__":
