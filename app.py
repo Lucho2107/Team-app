@@ -59,7 +59,29 @@ def generar_jpeg(fig, w=1400, h=700):
         return None
 
 
-def colores_grafico(fondo):
+def fecha_ultimo_commit(filepath):
+    """Obtiene la fecha del último commit de git para un archivo específico."""
+    import subprocess, datetime
+    try:
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%ai", "--", filepath],
+            capture_output=True, text=True
+        )
+        fecha_raw = result.stdout.strip()
+        if fecha_raw:
+            dt = datetime.datetime.fromisoformat(fecha_raw[:19])
+            return dt.strftime("%d/%m/%Y")
+    except Exception:
+        pass
+    # Fallback a fecha de modificación
+    try:
+        import datetime as dt2
+        return dt2.datetime.fromtimestamp(os.path.getmtime(filepath)).strftime("%d/%m/%Y")
+    except Exception:
+        return "—"
+
+
+
     if fondo == "Blanco":
         return "#FFFFFF", "#FFFFFF", "#1A1F2E", "#CCCCCC"
     elif fondo == "Transparente":
@@ -529,8 +551,7 @@ def main():
                 if fuente_b == "Seleccionar archivo guardado" and archivos_data:
                     sel_b  = st.selectbox("Archivo disponible", archivos_data, key="sel_b")
                     import datetime
-                    fecha_mod = os.path.getmtime(os.path.join("data", sel_b))
-                    fecha_str = datetime.datetime.fromtimestamp(fecha_mod).strftime("%d/%m/%Y")
+                    fecha_str = fecha_ultimo_commit(os.path.join("data", sel_b))
                     st.caption(f"Última actualización: {fecha_str}")
                     excel_b = open(os.path.join("data", sel_b), "rb")
                 else:
@@ -626,8 +647,7 @@ def main():
                 if fuente_t == "Seleccionar archivo guardado" and archivos_tl:
                     sel_t = st.selectbox("Archivo disponible", archivos_tl, key="sel_t")
                     import datetime
-                    fecha_mod_t = os.path.getmtime(os.path.join("data_timelapse", sel_t))
-                    fecha_str_t = datetime.datetime.fromtimestamp(fecha_mod_t).strftime("%d/%m/%Y")
+                    fecha_str_t = fecha_ultimo_commit(os.path.join("data_timelapse", sel_t))
                     st.caption(f"Última actualización: {fecha_str_t}")
                     excel_t = open(os.path.join("data_timelapse", sel_t), "rb")
                 else:
