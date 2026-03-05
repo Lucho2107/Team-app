@@ -582,12 +582,10 @@ def main():
                     st.plotly_chart(fig_b, use_container_width=True,
                         config={"toImageButtonOptions": {"format": "jpeg", "filename": var_b, "scale": 2}})
 
-                    st.markdown("### Descargar imagen")
-                    jpeg_b = generar_jpeg(fig_b, w=1400, h=700)
-                    if jpeg_b:
-                        st.image(jpeg_b, caption="Click derecho → Copiar imagen", use_container_width=True)
-                        st.download_button("Descargar JPEG", jpeg_b,
-                                           file_name=f"{var_b}.jpg", mime="image/jpeg", key="dl_jpeg_b")
+                    with st.expander("Descargar imagen"):
+                        jpeg_b = generar_jpeg(fig_b, w=1400, h=700)
+                        if jpeg_b:
+                            st.image(jpeg_b, caption="Click derecho → Copiar imagen", use_container_width=True)
 
                     with st.expander("Ver tabla"):
                         tab_b = df_b[[var_b]].dropna().sort_values(var_b, ascending=False)
@@ -600,13 +598,10 @@ def main():
                     st.plotly_chart(fig_d, use_container_width=True,
                         config={"toImageButtonOptions": {"format": "jpeg", "filename": f"{var_x_d}_vs_{var_y_d}", "scale": 2}})
 
-                    st.markdown("### Descargar imagen")
-                    jpeg_d = generar_jpeg(fig_d, w=1200, h=800)
-                    if jpeg_d:
-                        st.image(jpeg_d, caption="Click derecho → Copiar imagen", use_container_width=True)
-                        st.download_button("Descargar JPEG", jpeg_d,
-                                           file_name=f"{var_x_d}_vs_{var_y_d}.jpg",
-                                           mime="image/jpeg", key="dl_jpeg_d")
+                    with st.expander("Descargar imagen"):
+                        jpeg_d = generar_jpeg(fig_d, w=1200, h=800)
+                        if jpeg_d:
+                            st.image(jpeg_d, caption="Click derecho → Copiar imagen", use_container_width=True)
 
                     with st.expander("Ver tabla"):
                         st.dataframe(
@@ -703,12 +698,10 @@ def main():
             st.plotly_chart(fig_t, use_container_width=True,
                 config={"toImageButtonOptions": {"format": "jpeg", "filename": f"timelapse_{var_eq}", "scale": 2}})
 
-            st.markdown("### Descargar imagen")
-            jpeg_t = generar_jpeg(fig_t, w=1400, h=600)
-            if jpeg_t:
-                st.image(jpeg_t, caption="Click derecho → Copiar imagen", use_container_width=True)
-                st.download_button("Descargar JPEG", jpeg_t,
-                                   file_name=f"timelapse_{var_eq}.jpg", mime="image/jpeg", key="dl_jpeg_t")
+            with st.expander("Descargar imagen"):
+                jpeg_t = generar_jpeg(fig_t, w=1400, h=600)
+                if jpeg_t:
+                    st.image(jpeg_t, caption="Click derecho → Copiar imagen", use_container_width=True)
 
             with st.expander("Ver datos"):
                 cols_ver = ["Partido", var_eq]
