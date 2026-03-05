@@ -81,7 +81,7 @@ def fecha_ultimo_commit(filepath):
         return "—"
 
 
-
+def colores_grafico(fondo):
     if fondo == "Blanco":
         return "#FFFFFF", "#FFFFFF", "#1A1F2E", "#CCCCCC"
     elif fondo == "Transparente":
