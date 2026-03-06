@@ -677,18 +677,15 @@ def main():
     lang = st.session_state.lang
     T    = UI[lang]
 
-    # ── Botones de idioma (cambian en la misma pestaña) ──
-    _, col_es, col_en = st.columns([10, 0.5, 0.5])
-    with col_es:
-        if st.button("ES", key="btn_es", type="primary" if lang == "es" else "secondary"):
-            st.query_params["lang"] = "es"
-            st.session_state.lang = "es"
-            st.rerun()
-    with col_en:
-        if st.button("EN", key="btn_en", type="primary" if lang == "en" else "secondary"):
-            st.query_params["lang"] = "en"
-            st.session_state.lang = "en"
-            st.rerun()
+    # ── Botones de idioma en una sola línea (misma pestaña) ──
+    es_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "es" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
+    en_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "en" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
+    st.markdown(f"""
+    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px;">
+        <button onclick="window.location.replace('?lang=es')" style="padding:4px 14px;border-radius:5px;font-size:13px;cursor:pointer;{es_style}">ES</button>
+        <button onclick="window.location.replace('?lang=en')" style="padding:4px 14px;border-radius:5px;font-size:13px;cursor:pointer;{en_style}">EN</button>
+    </div>
+    """, unsafe_allow_html=True)
 
     with st.sidebar:
         st.markdown(f"## {T['fondo']}")
