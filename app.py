@@ -677,20 +677,19 @@ def main():
     lang = st.session_state.lang
     T    = UI[lang]
 
-    # ── Botones de idioma nativos Streamlit en una sola línea ──
+    # ── Botones de idioma en una línea ──
     st.markdown("""
     <style>
-        div[data-testid="column"]:nth-of-type(2) button,
-        div[data-testid="column"]:nth-of-type(3) button {
-            padding: 2px 10px !important;
-            font-size: 12px !important;
-            min-height: 0 !important;
-            height: 28px !important;
-            width: 100% !important;
+        [data-testid="stHorizontalBlock"]:first-of-type [data-testid="stButton"] button {
+            padding: 4px 16px !important;
+            font-size: 13px !important;
+            height: 32px !important;
+            white-space: nowrap !important;
+            min-width: 48px !important;
         }
     </style>
     """, unsafe_allow_html=True)
-    _, col_es, col_en = st.columns([9, 0.4, 0.4])
+    gap, col_es, col_en = st.columns([8, 1, 1])
     with col_es:
         if st.button("ES", key="btn_es", type="primary" if lang == "es" else "secondary"):
             st.session_state.lang = "es"
