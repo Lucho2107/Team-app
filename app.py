@@ -677,15 +677,30 @@ def main():
     lang = st.session_state.lang
     T    = UI[lang]
 
-    # ── Botones de idioma en una sola línea (misma pestaña) ──
-    es_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "es" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
-    en_style = "background:#1A1F2E;color:#ffffff;border:1px solid #4A6080;font-weight:700;" if lang == "en" else "background:transparent;color:#6B7280;border:1px solid #374151;font-weight:500;"
-    st.markdown(f"""
-    <div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px;">
-        <button onclick="window.location.replace('?lang=es')" style="padding:4px 14px;border-radius:5px;font-size:13px;cursor:pointer;{es_style}">ES</button>
-        <button onclick="window.location.replace('?lang=en')" style="padding:4px 14px;border-radius:5px;font-size:13px;cursor:pointer;{en_style}">EN</button>
-    </div>
+    # ── Botones de idioma nativos Streamlit en una sola línea ──
+    st.markdown("""
+    <style>
+        div[data-testid="column"]:nth-of-type(2) button,
+        div[data-testid="column"]:nth-of-type(3) button {
+            padding: 2px 10px !important;
+            font-size: 12px !important;
+            min-height: 0 !important;
+            height: 28px !important;
+            width: 100% !important;
+        }
+    </style>
     """, unsafe_allow_html=True)
+    _, col_es, col_en = st.columns([9, 0.4, 0.4])
+    with col_es:
+        if st.button("ES", key="btn_es", type="primary" if lang == "es" else "secondary"):
+            st.session_state.lang = "es"
+            st.query_params["lang"] = "es"
+            st.rerun()
+    with col_en:
+        if st.button("EN", key="btn_en", type="primary" if lang == "en" else "secondary"):
+            st.session_state.lang = "en"
+            st.query_params["lang"] = "en"
+            st.rerun()
 
     with st.sidebar:
         st.markdown(f"## {T['fondo']}")
